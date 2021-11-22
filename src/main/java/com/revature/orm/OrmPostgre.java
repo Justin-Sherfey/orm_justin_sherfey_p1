@@ -4,7 +4,9 @@ import com.revature.*;
 import com.revature.annotations.Column;
 import com.revature.annotations.PK;
 import com.revature.connection.Dao;
+import com.revature.testing.AmpliferSerial;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.lang.reflect.*;
@@ -62,9 +64,64 @@ public class OrmPostgre {
      *
      * @return Object found from primary key inputted
      */
-    public static Object read() {
+    //select * from orm_tables.amplifierpersonell where "ID" = 2
+    public static Object read(Class<?> clazz, Object pk) {
 
-        return null;
+        Object obj = null;
+        try {
+            obj = clazz.getConstructor().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Object> objList = null;
+
+        StringBuilder query = new StringBuilder();
+        query.append("select * from orm_tables." + clazz.getSimpleName() +
+                " where \"");
+
+        for(Field field: clazz.getDeclaredFields()) {
+            if(Arrays.toString(field.getAnnotations()).contains("PK")) {
+                query.append(field.getName() + "\" = '" + pk.toString() + "'");
+                objList = Dao.sqlRead(query);
+            }
+        }
+
+        int count = 0;
+        for(Field field: clazz.getDeclaredFields()) {
+            field.setAccessible(true);
+
+             if(field.getType().getTypeName() == "java.lang.String") {
+                try {
+                    field.set(obj, (String) objList.get(count));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+             if(field.getType().getTypeName() == "int") {
+                try {
+                    int val = (int) objList.get(count);
+                    field.setInt(obj, val);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+             else if(field.getType().getTypeName() == "double") {
+                try {
+                    field.set(obj, (Double) objList.get(count));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            count++;
+        }
+        return obj;
     }
 
     /**
@@ -156,7 +213,6 @@ public class OrmPostgre {
             query.append(")");
         }
         Dao.sql(query);
-        System.out.println(query);
     }
 
     /**
@@ -173,7 +229,6 @@ public class OrmPostgre {
             if(Arrays.toString(field.getAnnotations()).contains("PK")) {
                 query.append(field.getName() + "\" = '" + pk.toString() + "'");
                 Dao.sql(query);
-                System.out.println(query);
             }
         }
     }

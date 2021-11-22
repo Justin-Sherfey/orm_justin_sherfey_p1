@@ -28,15 +28,27 @@ public class Main {
         OrmPostgre.create(AmpliferSerial.class);
 
         AmpliferSerial jake = new AmpliferSerial();
-        jake.setName("Brad");
+        jake.setName("Tim");
         AmpliferSerial josh = new AmpliferSerial();
-        josh.setName("Erin");
+        josh.setName("Julien");
 
-        OrmPostgre.update(jake);
-        OrmPostgre.update(josh);
+        //OrmPostgre.update(jake);
+        //OrmPostgre.update(josh);
 
         // testing delete
-        OrmPostgre.delete(AmpliferSerial.class, 1);
+        OrmPostgre.delete(AmpliferSerial.class, 10);
 
+        OrmPostgre.read(AmpliferSerial.class, 3);
+
+        AmplifierPersonell henry = new AmplifierPersonell();
+        henry.setID(44);
+        henry.setName("Henry");
+
+        OrmPostgre.update(henry);
+
+        AmplifierPersonell henryEmpty = new AmplifierPersonell();
+        henryEmpty = (AmplifierPersonell) OrmPostgre.read(AmplifierPersonell.class, 44);
+        System.out.println(henryEmpty.getID());
+        System.out.println(henryEmpty.getName());
     }
 }

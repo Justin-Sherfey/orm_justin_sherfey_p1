@@ -27,5 +27,53 @@ public class Dao {
         }
     }
 
+    /**
+     * Executes query to read from database and gets a resultset that has all the obj
+     * information
+     *
+     * @param query - query to be run
+     * @return - object set that will be parsed in the orm
+     */
+    public static ArrayList<Object> sqlRead(StringBuilder query) {
 
+        ArrayList<Object> objList = new ArrayList<Object>();
+
+        try(Connection connection = ConnectionService.getInstance()) {
+            PreparedStatement statement = connection.prepareStatement(String.valueOf(query));
+
+            ResultSet rs = statement.executeQuery();
+
+            if(rs.next()) {
+                ResultSetMetaData metaData = rs.getMetaData();
+                for(int i = 1; i < metaData.getColumnCount()+1; i++) {
+
+                    String column = metaData.getColumnName(i);
+                    int type = metaData.getColumnType(i);
+
+                    if(type == Types.VARCHAR || type == Types.CHAR) {
+                        objList.add(rs.getString(column));
+                    } else
+
+                    if(type == Types.BOOLEAN) {
+                        objList.add(rs.getBoolean(column));
+                    } else
+
+                    if(type == Types.STRUCT) {
+                        objList.add(rs.getObject(column));
+                    } else
+
+                    if(type == Types.INTEGER) {
+                        objList.add(rs.getInt(column));
+                    } else
+
+                    if(type == Types.DOUBLE) {
+                        objList.add(rs.getDouble(column));
+                    }
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return objList;
+    }
 }
