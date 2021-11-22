@@ -15,6 +15,7 @@ public class Main {
 
         System.out.println("------------------create done---------------------------");
 
+        // testing create and with non-serializable pk
         OrmPostgre.create(AmplifierPersonell.class);
 
         AmplifierPersonell justin = new AmplifierPersonell();
@@ -23,6 +24,19 @@ public class Main {
 
         OrmPostgre.update(justin);
 
+        // testing updating with a serial pk
+        OrmPostgre.create(AmpliferSerial.class);
+
+        AmpliferSerial jake = new AmpliferSerial();
+        jake.setName("Brad");
+        AmpliferSerial josh = new AmpliferSerial();
+        josh.setName("Erin");
+
+        OrmPostgre.update(jake);
+        OrmPostgre.update(josh);
+
+        // testing delete
+        OrmPostgre.delete(AmpliferSerial.class, 1);
 
     }
 }

@@ -68,13 +68,16 @@ public class OrmPostgre {
     }
 
     /**
-     * Updates an object in a table, if does not exists inserts into
+     * Updates an object in a table, if does not exist inserts into
+     * If the pk is serial, only inserts into table
      *
      * @param obj
      */
     public static void update(Object obj) {
 
         boolean firstArg = true;
+        boolean pkSerial = false;
+        boolean serial = false;
         Field pk = null;
 
         StringBuilder query = new StringBuilder();
@@ -85,14 +88,24 @@ public class OrmPostgre {
             if(!firstArg) {
                 query.append(",");
             }
-            query.append("\"" + field.getName() + "\" ");
-            firstArg = false;
 
             // assign primary key for later if it is the correct value
             if(Arrays.toString(field.getDeclaredAnnotations()).contains("PK")) {
                 pk = field;
+                if(field.getDeclaredAnnotation(PK.class).serial()) {
+                    pkSerial = true;
+                    serial = true;
+                }
+            }
+            // if the primary key is serial, do not append it to the statement
+            if(!pkSerial) {
+                query.append("\"" + field.getName() + "\" ");
+                firstArg = false;
+            } else {
+                pkSerial = false;
             }
         }
+
         query.append(") values (");
         firstArg = true;
 
@@ -102,30 +115,45 @@ public class OrmPostgre {
                 query.append(",");
             }
             field.setAccessible(true);
-            try {
-                query.append("'" + field.get(obj) + "' ");
-            } catch(IllegalAccessException e) {
-                e.printStackTrace();
+            if(Arrays.toString(field.getDeclaredAnnotations()).contains("PK") &&
+                    field.getDeclaredAnnotation(PK.class).serial()) {
+                pkSerial = true;
             }
-            firstArg = false;
-        }
-        query.append(") on conflict (\"" + pk.getName() + "\") do update set ");
-        firstArg = true;
-
-        // do update if already present and needs updating
-        for(Field field: obj.getClass().getDeclaredFields()) {
-            if(!Arrays.toString(field.getDeclaredAnnotations()).contains("PK")) {
-                if (!firstArg) {
-                    query.append(",");
-                }
-                field.setAccessible(true);
+            // if the primary key is serial, do not append it to the statement
+            if(!pkSerial) {
                 try {
-                    query.append("\"" + field.getName() + "\" = '" + field.get(obj) + "' ");
-                } catch (IllegalAccessException e) {
+                    query.append("'" + field.get(obj) + "' ");
+                } catch(IllegalAccessException e) {
                     e.printStackTrace();
                 }
                 firstArg = false;
+            } else {
+                pkSerial = false;
             }
+        }
+        // add the update value if the pk is not serializable
+        if(!serial) {
+            query.append(") on conflict (\"" + pk.getName() + "\") do update set ");
+            firstArg = true;
+
+
+            // do update if already present and needs updating
+            for (Field field : obj.getClass().getDeclaredFields()) {
+                if (!Arrays.toString(field.getDeclaredAnnotations()).contains("PK")) {
+                    if (!firstArg) {
+                        query.append(",");
+                    }
+                    field.setAccessible(true);
+                    try {
+                        query.append("\"" + field.getName() + "\" = '" + field.get(obj) + "' ");
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    firstArg = false;
+                }
+            }
+        } else {
+            query.append(")");
         }
         Dao.sql(query);
         System.out.println(query);
@@ -134,9 +162,20 @@ public class OrmPostgre {
     /**
      * Deletes the item requested identified by primary key
      */
-    public static boolean delete() {
+    // delete from orm_tables.amplifierpersonell where "ID" = '10'
+    public static void delete(Class<?> clazz, Object pk) {
 
-        return false;
+        StringBuilder query = new StringBuilder();
+
+        query.append("delete from orm_tables." + clazz.getSimpleName() +
+                " where \"");
+        for(Field field: clazz.getDeclaredFields()) {
+            if(Arrays.toString(field.getAnnotations()).contains("PK")) {
+                query.append(field.getName() + "\" = '" + pk.toString() + "'");
+                Dao.sql(query);
+                System.out.println(query);
+            }
+        }
     }
 
     /**
