@@ -50,5 +50,16 @@ public class Main {
         henryEmpty = (AmplifierPersonell) OrmPostgre.read(AmplifierPersonell.class, 44);
         System.out.println(henryEmpty.getID());
         System.out.println(henryEmpty.getName());
+
+        AmpliferSerial sophia = new AmpliferSerial();
+        sophia.setName("Sophia");
+
+        // OrmPostgre.update(sophia);
+
+        AmpliferSerial sophiaEmpty = new AmpliferSerial();
+        sophiaEmpty = (AmpliferSerial) OrmPostgre.read(AmpliferSerial.class, 20);
+        System.out.println(sophiaEmpty.getID());
+        System.out.println(sophiaEmpty.getName());
+
     }
 }
