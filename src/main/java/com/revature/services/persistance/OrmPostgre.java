@@ -16,7 +16,7 @@ public class OrmPostgre {
      *
      * @param clazz - the class of the object
      */
-    private static void create(Class<?> clazz) {
+    public static void create(Class<?> clazz) {
 
         // initializes string builder and beginning of query
         StringBuilder query = new StringBuilder();
@@ -98,7 +98,7 @@ public class OrmPostgre {
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
-            }
+            } else
              if(field.getType().getTypeName() == "int") {
                 try {
                     int val = (int) objList.get(count);
@@ -263,7 +263,6 @@ public class OrmPostgre {
     private static boolean contains(Class<?> clazz) {
         StringBuilder query = new StringBuilder();
         query.append("select to_regclass('orm_tables." + clazz.getSimpleName().toLowerCase() + "')");
-        System.out.println(query);
         return Dao.sqlContains(query);
     }
 }

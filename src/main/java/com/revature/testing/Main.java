@@ -64,6 +64,10 @@ public class Main {
         System.out.println(sophiaEmpty.getID());
         System.out.println(sophiaEmpty.getName());
 
+        System.out.println("------------Read test-----------------");
+        User user = (User) OrmPostgre.read(User.class, "Justin");
+        System.out.println(user.getAge());
+
 
 
 
