@@ -11,6 +11,9 @@ public class Main {
         String createTableString = "CREATE TABLE if not exists orm_tables.javatest (column1 serial4 not null, \"name\" varchar NULL, \"password\" varchar NOT NULL, CONSTRAINT javatest_pk PRIMARY KEY (column1));";
         //Dao.sql(createTableString);
 
+        OrmPostgre.create(UserTest.class);
+
+
         System.out.println("------------------create done---------------------------");
 
         // testing create and with non-serializable pk
@@ -65,8 +68,8 @@ public class Main {
         System.out.println(sophiaEmpty.getName());
 
         System.out.println("------------Read test-----------------");
-        User user = (User) OrmPostgre.read(User.class, "Justin");
-        System.out.println(user.getAge());
+        //User user = (User) OrmPostgre.read(User.class, "Justin");
+        //System.out.println(user.getAge());
 
 
 

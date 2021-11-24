@@ -47,10 +47,13 @@ public class OrmPostgre {
                 if(field.getDeclaredAnnotation(Column.class).unique()) {
                     query.append("unique ");
                 }
+                query.append(",");
             }
         }
         // end of query and execute with dao
+        query.deleteCharAt(query.length()-1);
         query.append(");");
+        System.out.println(query);
         Dao.sql(query);
     }
 
@@ -252,6 +255,7 @@ public class OrmPostgre {
                 return type.toString();
         }
     }
+
 
     /**
      * Helper function to determine if class table exists in db yet
