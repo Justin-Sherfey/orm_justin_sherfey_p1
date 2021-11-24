@@ -1,8 +1,6 @@
 package com.revature.testing;
 
-import com.revature.connection.Dao;
-import com.revature.*;
-import com.revature.orm.OrmPostgre;
+import com.revature.services.persistance.OrmPostgre;
 
 public class Main {
 
@@ -16,7 +14,12 @@ public class Main {
         System.out.println("------------------create done---------------------------");
 
         // testing create and with non-serializable pk
-        OrmPostgre.create(AmplifierPersonell.class);
+        //OrmPostgre.create(AmplifierPersonell.class);
+        //OrmPostgre.create(User.class);
+
+        AmplifierUpdate chloe = new AmplifierUpdate("Chloe", 22);
+
+        OrmPostgre.update(chloe);
 
         AmplifierPersonell justin = new AmplifierPersonell();
         justin.setID(10);
@@ -25,7 +28,7 @@ public class Main {
         OrmPostgre.update(justin);
 
         // testing updating with a serial pk
-        OrmPostgre.create(AmpliferSerial.class);
+        // OrmPostgre.create(AmpliferSerial.class);
 
         AmpliferSerial jake = new AmpliferSerial();
         jake.setName("Tim");
@@ -60,6 +63,10 @@ public class Main {
         sophiaEmpty = (AmpliferSerial) OrmPostgre.read(AmpliferSerial.class, 20);
         System.out.println(sophiaEmpty.getID());
         System.out.println(sophiaEmpty.getName());
+
+
+
+
 
     }
 }

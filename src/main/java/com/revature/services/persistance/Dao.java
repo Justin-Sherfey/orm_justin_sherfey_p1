@@ -1,9 +1,8 @@
-package com.revature.connection;
+package com.revature.services.persistance;
 
-import com.revature.annotations.*;
-import java.lang.reflect.*;
+import com.revature.services.connection.ConnectionService;
+
 import java.sql.*;
-import com.revature.connection.ConnectionService;
 
 import java.util.*;
 
@@ -25,6 +24,27 @@ public class Dao {
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Checks to see if the db contains a class already
+     *
+     * @param query - sql query to be run
+     * @return true or false corresponding if it exists yet
+     */
+    public static boolean sqlContains(StringBuilder query) {
+        try(Connection connection = ConnectionService.getInstance()) {
+            PreparedStatement statement = connection.prepareStatement(String.valueOf(query));
+
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            if(rs.getString("to_regclass") != null) {
+                return true;
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

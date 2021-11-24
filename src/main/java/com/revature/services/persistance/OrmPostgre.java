@@ -1,13 +1,8 @@
-package com.revature.orm;
+package com.revature.services.persistance;
 
-import com.revature.*;
 import com.revature.annotations.Column;
 import com.revature.annotations.PK;
-import com.revature.connection.Dao;
-import com.revature.testing.AmpliferSerial;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 import java.lang.reflect.*;
 
@@ -21,7 +16,7 @@ public class OrmPostgre {
      *
      * @param clazz - the class of the object
      */
-    public static void create(Class<?> clazz) {
+    private static void create(Class<?> clazz) {
 
         // initializes string builder and beginning of query
         StringBuilder query = new StringBuilder();
@@ -132,6 +127,11 @@ public class OrmPostgre {
      */
     public static void update(Object obj) {
 
+        // creates a new table for object if class does not exist already
+        if(!contains(obj.getClass())) {
+            create(obj.getClass());
+        }
+
         boolean firstArg = true;
         boolean pkSerial = false;
         boolean serial = false;
@@ -162,7 +162,7 @@ public class OrmPostgre {
                 pkSerial = false;
             }
         }
-
+        // builds values portion of query
         query.append(") values (");
         firstArg = true;
 
@@ -251,5 +251,19 @@ public class OrmPostgre {
             default:
                 return type.toString();
         }
+    }
+
+    /**
+     * Helper function to determine if class table exists in db yet
+     *
+     * @param clazz - class being checked for
+     * @return true or false
+     */
+    //SELECT to_regclass('schema_name.table_name');
+    private static boolean contains(Class<?> clazz) {
+        StringBuilder query = new StringBuilder();
+        query.append("select to_regclass('orm_tables." + clazz.getSimpleName().toLowerCase() + "')");
+        System.out.println(query);
+        return Dao.sqlContains(query);
     }
 }
