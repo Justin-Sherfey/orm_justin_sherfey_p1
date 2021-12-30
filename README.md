@@ -24,10 +24,7 @@ Use the library methods below to persist object models to the database
 | Method          | Description            |
 | -----------     | ----------------       |
 | `void create(object.class)`    | creates a table if one does not exist in the database yet     |
+| `object read(object.class, primarykey)` | Reads from the database using primary key and returns the object wanted |
+| `void update(object)` | Updates an object in a table, if does not exist inserts into |
+| `delete(object)` | Deletes the item requested identified by primary key |
 
-
-`object read(object.class, primarykey)` - Reads from the database using primary key and returns the object wanted <br><br>
-
-`void update(object)` - Updates an object in a table, if does not exist inserts into <br><br>
-
-`delete(object)` - Deletes the item requested identified by primary key <br><br>
