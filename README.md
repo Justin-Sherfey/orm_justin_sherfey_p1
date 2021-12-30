@@ -19,5 +19,12 @@ Use the annotations below to to build the database models to be persisted
 `@Column`  creates a column  <br>
       arguments (boolean notNull, boolean Unique) -> whether column will have notNull and unique constrains <br> <br> <br>
       
-**Example**
+Use the library methods below to persist object models to the database
 
+`void create(object.class)` - creates a table if one does not exist in the database yet <br><br>
+
+`object read(object.class, primarykey)` - Reads from the database using primary key and returns the object wanted <br><br>
+
+`void update(object)` - Updates an object in a table, if does not exist inserts into <br><br>
+
+`delete(object)` - Deletes the item requested identified by primary key <br><br>
