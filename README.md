@@ -21,7 +21,10 @@ Use the annotations below to to build the database models to be persisted
       
 Use the library methods below to persist object models to the database
 
-`void create(object.class)` - creates a table if one does not exist in the database yet <br><br>
+| Method          | Description            |
+| -----------     | ----------------       |
+| `void create(object.class)`    | creates a table if one does not exist in the database yet     |
+
 
 `object read(object.class, primarykey)` - Reads from the database using primary key and returns the object wanted <br><br>
 
