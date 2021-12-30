@@ -19,7 +19,7 @@ Use the annotations below to to build the database models to be persisted
 `@PK`  creates the primary key column <br>
       arguments (boolean serial) -> whether primary key will be serial or not <br> <br> <br>
 `@Column`  creates a column  <br>
-      arguments (boolean notNull, boolean Unique) -> whether column will have notNull and unique constrains <br> <br> <br>
+      arguments (boolean notNull, boolean Unique) -> whether column will have notNull and unique constrains <br> <br>
       
 Use the library methods below to persist object models to the database
 
