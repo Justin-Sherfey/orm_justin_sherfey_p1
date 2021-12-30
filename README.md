@@ -30,3 +30,5 @@ Use the library methods below to persist object models to the database
 | `void update(object)` | Updates an object in a table, if does not exist inserts into |
 | `delete(object)` | Deletes the item requested identified by primary key |
 
+Sample Web Implementation using servlets and endpoints, Accessed with Postman
+https://github.com/Justin-Sherfey/webapp_justin_sherfey_p1/tree/master/src/main/java/com/revature
