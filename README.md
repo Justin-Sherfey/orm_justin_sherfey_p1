@@ -12,6 +12,8 @@ A custom lightweight ORM to abstract away use of SQL statements in Java using an
 
 ## Getting Started
 
+Be sure to configure database connection in ConnectionService.java to have valid credentials to the correct database
+
 Use the annotations below to to build the database models to be persisted
 
 `@PK`  creates the primary key column <br>
