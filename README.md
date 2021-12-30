@@ -2,4 +2,12 @@
 
 ### About
 
-A custom lightweight ORM to abstract away use of SQL statements in Java
+A custom lightweight ORM to abstract away use of SQL statements in Java using annotations
+
+### Getting Started
+
+Use the annotations below to to build the database models to be persisted
+
+`@PK`     - creates the primary key column
+`@Column` - creates a column
+
