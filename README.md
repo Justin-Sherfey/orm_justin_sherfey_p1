@@ -9,7 +9,7 @@ A custom lightweight ORM to abstract away use of SQL statements in Java using an
 Use the annotations below to to build the database models to be persisted
 
 `@PK    `  creates the primary key column <br>
-  arguments (boolean serial) -> whether primary key will be serial or not
+      arguments (boolean serial) -> whether primary key will be serial or not <br>
 `@Column`  creates a column  <br>
-  arguments (boolean notNull, boolean Unique) -> whether column will have notNull and unique constrains 
+      arguments (boolean notNull, boolean Unique) -> whether column will have notNull and unique constrains <br>
 
