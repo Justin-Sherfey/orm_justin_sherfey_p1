@@ -6,9 +6,9 @@ A custom lightweight ORM to abstract away use of SQL statements in Java using an
 
 ## Local Install using Maven
 
-**groupId** - com.revature
-**artifactId** - justin_sherfey_p1
-**version** - 2.0
+**groupId** - com.revature <br>
+**artifactId** - justin_sherfey_p1 <br>
+**version** - 2.0 <br>
 
 ## Getting Started
 
